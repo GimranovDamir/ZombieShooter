@@ -9,21 +9,21 @@
 	}
 	#field {
     position: absolute;
-    width: 256px;
+    width: 3384px;
     height: 240px;
 	}
 	#canvas {
     position: absolute;
-    width: 255px;
-    height: 208px;
+    width: 3384px;
+    height: 240px;
 	}
   </style>
 </head>
 <body>
 
    <div id="canvas-container">
-    <canvas  height='240' width='256' id='field'></canvas>
-	 <canvas  id='canvas'></canvas> 
+    <canvas  height='240' width='3384' id='field'></canvas>
+	 <canvas  height='240' width='3384' id='canvas'></canvas> 
 	
 	</div>
 	<script src="field.js"> </script>
@@ -44,12 +44,33 @@
 
 		function view() {
     	    for (var i = 0; i < maps.map.length; i++) 
-    	    	for (var j = 0; j < 16; j++) {
+    	    	for (var j = 0; j < maps.map[i].length; j++) {
     	    		draw('sky.png', j * size,  i * size);
     	    		switch(maps.map[i][j]) {
     	    			case 1:
     	    				draw('ground.png', j * size, i * size);
     	    				break;
+    	    			case 'b':
+    	    				draw('b.png', j * size, i * size);
+    	    				break;
+    	    			case '?':
+    	    				draw('q.png', j * size, i * size);
+    	    				break;
+    	    			case 'gt1':
+    	    				draw('gt1.png', j * size, i * size);
+    	    				break;
+    	    			case 'gt2':
+    	    				draw('gt2.png', j * size, i * size);
+    	    				break;
+    	    			case 't1':
+    	    				draw('t1.png', j * size, i * size);
+    	    				break;
+    	    			case 't2':
+    	    				draw('t2.png', j * size, i * size);
+    	    				break;	
+    	    			case 's':
+    	    				draw('s.png', j * size, i * size);
+    	    				break;	
     	    			default:
     	    				break;
     	    		}

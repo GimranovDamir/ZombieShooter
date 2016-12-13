@@ -10,18 +10,15 @@
 // Define canvas and get context
 var canvas = document.getElementById("canvas"),
     ctx = canvas.getContext("2d"),
-    width = 255,
-    height = 208;
-
-canvas.width = width;
-canvas.height = height;
+    width = 3384,
+    height = 240;
 
 // Define player object
 var player = {
-    x: width / 2,
-    y: height - 5,
-    width: 5,
-    height: 5,
+    x: 36,
+    y: 208 - 16,
+    width: 13,
+    height: 16,
     speed: 3,
     velX: 0,
     velY: 0,
@@ -38,20 +35,20 @@ var friction = 0.8;
 var gravity = 0.3;
 
 function update () {
-
     // check for keys
     // --
     // up arrow or space
-    if (keys[38] || keys[32]) {
+    if (keys[87] || keys[32] || keys[1094]) {
         // jump!
-        if (!player.jumping) {
+        if (!player.jumping && maps.map[Math.floor(player.y / 16) + 1][Math.floor(player.x / 16) + 1] != 0 || maps.map[Math.floor(player.y / 16) + 1][Math.floor(player.x / 16)] != 0) {
             player.jumping = true;
-            player.velY = -player.speed * 2;
+            player.velY = -player.speed * 2.1;
+            
         }
     }
 
     // right arrow
-    if (keys[39]) {
+    if (keys[68]) {
         // increase speed to the right
         if (player.velX < player.speed) {
             player.velX++;
@@ -59,7 +56,7 @@ function update () {
     }
 
     // left arrow
-    if (keys[37]) {
+    if (keys[65]) {
         // increase speed to the right
         if (player.velX > -player.speed) {
             player.velX--;
@@ -84,17 +81,29 @@ function update () {
     }
 
     // don't allow the player to jump off the screen
-    if (player.y >= height - player.height) {
-        player.y = height - player.height;
+
+    if (maps.map[Math.floor(player.y / 16) - 1][Math.floor(player.x / 16)] != 0 && player.jumping == true || maps.map[Math.floor(player.y / 16) - 1][Math.floor(player.x / 16) + 1] != 0 && player.jumping == true) {
+        player.y = Math.floor(player.y / 16) * 16;
+        player.velY = 0;
+        keys[38] = false;
+        keys[32] = false;
         player.jumping = false;
-    }
+
+    } 
+    if (maps.map[Math.floor(player.y / 16) + 1][Math.floor(player.x / 16) + 1] != 0 || maps.map[Math.floor(player.y / 16) + 1][Math.floor(player.x / 16)] != 0) {
+        player.y = Math.floor((player.y) / 16) * 16;
+        player.velY = 0;
+        player.jumping = false;
+        }
+
     // draw player
     
     ppic = new Image();              // "Создаём" изображение
-    ppic.src = 'mario.png';  // Источник изображения, позаимствовано на хабре
+    ppic.src = 'mario.png'; 
+ // Источник изображения, позаимствовано на хабре
     ppic.onload = function() {
         ctx.clearRect(0, 0, width, height);    // Событие onLoad, ждём момента пока загрузится изображение
-        ctx.drawImage(ppic, player.x, player.y - 11);  // Рисуем изображение от точки с координатами 0, 0
+        ctx.drawImage(ppic, player.x, player.y);  // Рисуем изображение от точки с координатами 0, 0
     }
     // do the loop again
     requestAnimationFrame(update);
